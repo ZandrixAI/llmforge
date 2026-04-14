@@ -7,9 +7,9 @@ import unittest
 
 import mlx.core as mx
 
-from mlx_lm.generate import generate_step
-from mlx_lm.models.base import create_attention_mask, create_causal_mask
-from mlx_lm.models.cache import (
+from llmforge.generate import generate_step
+from llmforge.models.base import create_attention_mask, create_causal_mask
+from llmforge.models.cache import (
     ArraysCache,
     BatchKVCache,
     BatchRotatingKVCache,
@@ -23,7 +23,7 @@ from mlx_lm.models.cache import (
     save_prompt_cache,
     trim_prompt_cache,
 )
-from mlx_lm.utils import load
+from llmforge.utils import load
 
 HF_MODEL_PATH = "mlx-community/Qwen1.5-0.5B-Chat-4bit"
 

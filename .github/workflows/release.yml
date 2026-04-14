@@ -12,13 +12,13 @@ permissions:
 jobs:
 
   build_release:
-    if: github.repository == 'ml-explore/mlx-lm'
+    if: github.repository == 'llmforge/llmforge'
     runs-on: ubuntu-22.04
     permissions:
       id-token: write
     environment:
       name: pypi
-      url: https://pypi.org/p/mlx-lm
+      url: https://pypi.org/p/llmforge
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           overwrite: true
-          name: mlx-lm
+          name: llmforge
           path: dist/*
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

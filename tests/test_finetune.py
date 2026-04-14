@@ -12,11 +12,11 @@ import mlx.nn as nn
 import mlx.optimizers as opt
 from mlx.utils import tree_flatten
 
-from mlx_lm import lora, tuner
-from mlx_lm.tuner.dora import DoRAEmbedding, DoRALinear
-from mlx_lm.tuner.lora import LoRAEmbedding, LoRALinear
-from mlx_lm.tuner.trainer import evaluate
-from mlx_lm.tuner.utils import build_schedule
+from llmforge import lora, tuner
+from llmforge.tuner.dora import DoRAEmbedding, DoRALinear
+from llmforge.tuner.lora import LoRAEmbedding, LoRALinear
+from llmforge.tuner.trainer import evaluate
+from llmforge.tuner.utils import build_schedule
 
 
 @contextmanager
@@ -29,7 +29,7 @@ def swapped_with_identity(obj, func):
 
 class TestLora(unittest.TestCase):
     def test_llama(self):
-        from mlx_lm.models import llama
+        from llmforge.models import llama
 
         args = llama.ModelArgs(
             model_type="llama",
@@ -88,7 +88,7 @@ class TestLora(unittest.TestCase):
         )
 
     def test_gpt_neox(self):
-        from mlx_lm.models import gpt_neox
+        from llmforge.models import gpt_neox
 
         args = gpt_neox.ModelArgs(
             model_type="gpt_neox",
@@ -170,7 +170,7 @@ class TestDora(unittest.TestCase):
         self.assertFalse(mx.array_equal(embedding(tokens), dora_emb(tokens)))
 
     def test_llama(self):
-        from mlx_lm.models import llama
+        from llmforge.models import llama
 
         hidden_size = 1024
         intermediate_size = 2048

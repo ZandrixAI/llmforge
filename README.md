@@ -1,283 +1,243 @@
-## MLX LM 
+# LLMForge
 
-MLX LM is a Python package for generating text and fine-tuning large language
-models on Apple silicon with MLX.
+**LLMForge** is a powerful Python package for text generation and reinforcement learning self-improvement with large language models. Built on PyTorch, it supports CPU, GPU (CUDA), MPS (Apple Silicon), and TPU devices.
 
-Some key features include:
+## Key Features
 
-* Integration with the Hugging Face Hub to easily use thousands of LLMs with a
-  single command. 
-* Support for quantizing and uploading models to the Hugging Face Hub.
-* [Low-rank and full model
-  fine-tuning](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LORA.md)
-  with support for quantized models.
-* Distributed inference and fine-tuning with `mx.distributed`
+- **Multi-Device Support**: Run models on CPU, CUDA GPUs, Apple MPS, or TPU with automatic device detection
+- **Massive Model Support**: Handle 400B+ parameter models with 4-bit quantization and intelligent offloading
+- **Tensor Parallelism**: Auto-shard large models across multiple devices
+- **RL Self-Improvement**: Improve outputs without fine-tuning using:
+  - Self-critique (model critiques its own output)
+  - Best-of-N sampling (generate N candidates, pick the best)
+  - Iterative refinement (critique → improve → repeat)
+  - Chain-of-thought verification
+- **Streaming Generation**: Real-time token streaming with stop word support
+- **Hugging Face Integration**: Easily use thousands of LLMs from the Hugging Face Hub
+- **Thinking Filter**: Filter model's internal reasoning (`<think>` / `</think>` tags)
 
-The easiest way to get started is to install the `mlx-lm` package:
+## Installation
 
-**With `pip`**:
-
-```sh
-pip install mlx-lm
-```
-
-**With `conda`**:
+**With pip**:
 
 ```sh
-conda install -c conda-forge mlx-lm
+pip install llmforge
 ```
 
-### Quick Start
+**With uv**:
 
-To generate text with an LLM use:
-
-```bash
-mlx_lm.generate --prompt "How tall is Mt Everest?"
+```sh
+uv pip install llmforge
 ```
 
-To chat with an LLM use:
+**From source**:
 
-```bash
-mlx_lm.chat
+```sh
+git clone https://github.com/llmforge/llmforge.git
+cd llmforge
+pip install -e .
 ```
 
-This will give you a chat REPL that you can use to interact with the LLM. The
-chat context is preserved during the lifetime of the REPL.
-
-Commands in `mlx-lm` typically take command line options which let you specify
-the model, sampling parameters, and more. Use `-h` to see a list of available
-options for a command, e.g.:
-
-```bash
-mlx_lm.generate -h
-```
-
-The default model for generation and chat is
-`mlx-community/Llama-3.2-3B-Instruct-4bit`.  You can specify any MLX-compatible
-model with the `--model` flag. Thousands are available in the
-[MLX Community](https://huggingface.co/mlx-community) Hugging Face
-organization.
+## Quick Start
 
 ### Python API
 
-You can use `mlx-lm` as a module:
-
 ```python
-from mlx_lm import load, generate
+from llmforge import InferenceEngine
 
-model, tokenizer = load("mlx-community/Mistral-7B-Instruct-v0.3-4bit")
+# Create inference engine
+engine = InferenceEngine("Qwen/Qwen3-0.6B")
 
-prompt = "Write a story about Einstein"
-
-messages = [{"role": "user", "content": prompt}]
-prompt = tokenizer.apply_chat_template(
-    messages, add_generation_prompt=True,
-)
-
-text = generate(model, tokenizer, prompt=prompt, verbose=True)
-```
-
-To see a description of all the arguments you can do:
-
-```
->>> help(generate)
-```
-
-Check out the [generation
-example](https://github.com/ml-explore/mlx-lm/tree/main/mlx_lm/examples/generate_response.py)
-to see how to use the API in more detail. Check out the [batch generation
-example](https://github.com/ml-explore/mlx-lm/tree/main/mlx_lm/examples/batch_generate_response.py)
-to see how to efficiently generate continuations for a batch of prompts.
-
-The `mlx-lm` package also comes with functionality to quantize and optionally
-upload models to the Hugging Face Hub.
-
-You can convert models using the Python API:
-
-```python
-from mlx_lm import convert
-
-repo = "mistralai/Mistral-7B-Instruct-v0.3"
-upload_repo = "mlx-community/My-Mistral-7B-Instruct-v0.3-4bit"
-
-convert(repo, quantize=True, upload_repo=upload_repo)
-```
-
-This will generate a 4-bit quantized Mistral 7B and upload it to the repo
-`mlx-community/My-Mistral-7B-Instruct-v0.3-4bit`. It will also save the
-converted model in the path `mlx_model` by default.
-
-To see a description of all the arguments you can do:
-
-```
->>> help(convert)
-```
-
-#### Streaming
-
-For streaming generation, use the `stream_generate` function. This yields
-a generation response object.
-
-For example,
-
-```python
-from mlx_lm import load, stream_generate
-
-repo = "mlx-community/Mistral-7B-Instruct-v0.3-4bit"
-model, tokenizer = load(repo)
-
-prompt = "Write a story about Einstein"
-
-messages = [{"role": "user", "content": prompt}]
-prompt = tokenizer.apply_chat_template(
-    messages, add_generation_prompt=True,
-)
-
-for response in stream_generate(model, tokenizer, prompt, max_tokens=512):
-    print(response.text, end="", flush=True)
+# Streaming generation
+print("Model: ", end="", flush=True)
+for text in engine.generate("Explain quantum computing.", max_tokens=200):
+    print(text, end="", flush=True)
 print()
+
+# Non-streaming
+response = engine.generate(
+    "What is Python?",
+    max_tokens=100,
+    temperature=0.7,
+    top_p=0.9,
+    stream=False
+)
+print(response)
 ```
 
-#### Sampling
+### RL Self-Improvement
 
-The `generate` and `stream_generate` functions accept `sampler` and
-`logits_processors` keyword arguments. A sampler is any callable which accepts
-a possibly batched logits array and returns an array of sampled tokens.  The
-`logits_processors` must be a list of callables which take the token history
-and current logits as input and return the processed logits. The logits
-processors are applied in order.
+```python
+from llmforge import RLEngine
 
-Some standard sampling functions and logits processors are provided in
-`mlx_lm.sample_utils`.
+# Create RL engine directly
+rl = RLEngine("Qwen/Qwen3-0.6B")
+
+# Generate with self-improvement
+print("Model: ", end="", flush=True)
+for text in rl.generate(
+    "Explain gravity.",
+    strategy="self_critique",
+    max_tokens=200
+):
+    print(text, end="", flush=True)
+print()
+
+# Score text quality
+scores = rl.score("Your generated text here", reference="Original prompt")
+print(f"Quality scores: {scores}")
+```
+
+### Chat API
+
+```python
+from llmforge import InferenceEngine
+
+engine = InferenceEngine("Qwen/Qwen3-0.6B")
+
+messages = [
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "What is 2+2?"},
+]
+
+for text in engine.chat(messages, max_tokens=50):
+    print(text, end="", flush=True)
+```
 
 ### Command Line
 
-You can also use `mlx-lm` from the command line with:
-
-```
-mlx_lm.generate --model mistralai/Mistral-7B-Instruct-v0.3 --prompt "hello"
-```
-
-This will download a Mistral 7B model from the Hugging Face Hub and generate
-text using the given prompt.
-
-For a full list of options run:
-
-```
-mlx_lm.generate --help
-```
-
-To quantize a model from the command line run:
-
-```
-mlx_lm.convert --model mistralai/Mistral-7B-Instruct-v0.3 -q
-```
-
-For more options run:
-
-```
-mlx_lm.convert --help
-```
-
-You can upload new models to Hugging Face by specifying `--upload-repo` to
-`convert`. For example, to upload a quantized Mistral-7B model to the
-[MLX Hugging Face community](https://huggingface.co/mlx-community) you can do:
-
-```
-mlx_lm.convert \
-    --model mistralai/Mistral-7B-Instruct-v0.3 \
-    -q \
-    --upload-repo mlx-community/my-4bit-mistral
-```
-
-Models can also be converted and quantized directly in the
-[mlx-my-repo](https://huggingface.co/spaces/mlx-community/mlx-my-repo) Hugging
-Face Space.
-
-### Long Prompts and Generations 
-
-`mlx-lm` has some tools to scale efficiently to long prompts and generations:
-
-- A rotating fixed-size key-value cache.
-- Prompt caching
-
-To use the rotating key-value cache pass the argument `--max-kv-size n` where
-`n` can be any integer. Smaller values like `512` will use very little RAM but
-result in worse quality. Larger values like `4096` or higher will use more RAM
-but have better quality.
-
-Caching prompts can substantially speedup reusing the same long context with
-different queries. To cache a prompt use `mlx_lm.cache_prompt`. For example:
-
 ```bash
-cat prompt.txt | mlx_lm.cache_prompt \
-  --model mistralai/Mistral-7B-Instruct-v0.3 \
-  --prompt - \
-  --prompt-cache-file mistral_prompt.safetensors
-``` 
+# Generate text
+llmforge generate --model Qwen/Qwen3-0.6B --prompt "Hello, how are you?"
 
-Then use the cached prompt with `mlx_lm.generate`:
+# Chat REPL
+llmforge chat --model Qwen/Qwen3-0.6B
 
-```
-mlx_lm.generate \
-    --prompt-cache-file mistral_prompt.safetensors \
-    --prompt "\nSummarize the above text."
+# Quantize and run large models
+llmforge generate --model meta-llama/Llama-3-70B --bits 4
 ```
 
-The cached prompt is treated as a prefix to the supplied prompt. Also notice
-when using a cached prompt, the model to use is read from the cache and need
-not be supplied explicitly.
+## Configuration Options
 
-Prompt caching can also be used in the Python API in order to avoid
-recomputing the prompt. This is useful in multi-turn dialogues or across
-requests that use the same context. See the
-[example](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/examples/chat.py)
-for more usage details.
-
-### Supported Models
-
-`mlx-lm` supports thousands of LLMs available on the Hugging Face Hub. If the
-model you want to run is not supported, file an
-[issue](https://github.com/ml-explore/mlx-lm/issues/new) or better yet, submit
-a pull request. Many supported models are available in various quantization
-formats in the [MLX Community](https://huggingface.co/mlx-community) Hugging
-Face organization.
-
-For some models the tokenizer may require you to enable the `trust_remote_code`
-option. You can do this by passing `--trust-remote-code` in the command line.
-If you don't specify the flag explicitly, you will be prompted to trust remote
-code in the terminal when running the model. 
-
-Tokenizer options can also be set in the Python API. For example:
+### Device Selection
 
 ```python
-model, tokenizer = load(
-    "qwen/Qwen-7B",
-    tokenizer_config={"eos_token": "<|endoftext|>", "trust_remote_code": True},
+from llmforge import InferenceEngine
+
+# Auto-detect (default)
+engine = InferenceEngine("Qwen/Qwen3-0.6B")
+
+# Force specific device
+engine = InferenceEngine("Qwen/Qwen3-0.6B", device="cuda")   # NVIDIA GPU
+engine = InferenceEngine("Qwen/Qwen3-0.6B", device="mps")     # Apple Silicon
+engine = InferenceEngine("Qwen/Qwen3-0.6B", device="cpu")    # CPU
+```
+
+### Quantization & Offloading
+
+```python
+from llmforge import InferenceEngine
+
+# 4-bit quantization (reduces size by 4x)
+engine = InferenceEngine("meta-llama/Llama-3-8B", bits=4)
+
+# Layer offloading for massive models (GPU ↔ CPU)
+engine = InferenceEngine("meta-llama/Llama-3-70B", bits=4, offload=True)
+
+# Use Accelerate for disk offloading
+engine = InferenceEngine.from_pretrained(
+    "meta-llama/Llama-3-405B",
+    bits=4,
+    use_accelerate=True
 )
 ```
 
-### Large Models
+### Generation Parameters
 
-> [!NOTE]
-    This requires macOS 15.0 or higher to work.
-
-Models which are large relative to the total RAM available on the machine can
-be slow. `mlx-lm` will attempt to make them faster by wiring the memory
-occupied by the model and cache. This requires macOS 15 or higher to
-work.
-
-If you see the following warning message:
-
-> [WARNING] Generating with a model that requires ...
-
-then the model will likely be slow on the given machine. If the model fits in
-RAM then it can often be sped up by increasing the system wired memory limit.
-To increase the limit, set the following `sysctl`:
-
-```bash
-sudo sysctl iogpu.wired_limit_mb=N
+```python
+response = engine.generate(
+    prompt="Your prompt here",
+    max_tokens=512,           # Maximum tokens to generate
+    temperature=0.7,          # Sampling temperature (0 = greedy)
+    top_p=0.9,                # Nucleus sampling threshold
+    top_k=50,                 # Top-k sampling
+    repetition_penalty=1.1,   # Penalty for repeated tokens
+    stop_words=["\n\n"],      # Stop on these strings
+    enable_thinking=True,     # Show model's reasoning
+    stream=True,              # Stream tokens
+)
 ```
 
-The value `N` should be larger than the size of the model in megabytes but
-smaller than the memory size of the machine.
+## Architecture
+
+```
+BaseEngine
+├── Device detection, model loading
+├── Quantization (4-bit, 8-bit)
+├── Tensor parallelism
+├── KV cache management
+│
+└── InferenceEngine
+    ├── Sampling (top-k, top-p, temperature)
+    ├── Stop words, thinking filter
+    ├── Streaming generation
+    └── Chat API
+        │
+        └── RLEngine
+            ├── QualityScorer (NLTK-based)
+            ├── Best-of-N strategy
+            ├── Self-critique strategy
+            ├── Iterative refinement
+            └── Chain-of-thought verification
+```
+
+## Requirements
+
+- Python 3.8+
+- PyTorch 2.0+
+- transformers 5.0+
+- Additional dependencies listed in `pyproject.toml`
+
+## Examples
+
+See the `tests/` directory for example scripts:
+
+- `quick_run.py` - Basic inference
+- `test_engine.py` - Full engine API test
+- `test_rl.py` - RL self-improvement demo
+- `test_devices.py` - Multi-device support
+- `test_quant_offload.py` - Quantization and offloading
+
+## Acknowledgements
+
+LLMForge is built upon the pioneering work of the **MLX Community** and draws significant inspiration from [mlx-lm](https://github.com/ml-explore/mlx-lm). We are grateful for their contributions to democratizing LLM inference on Apple Silicon.
+
+Specifically, we acknowledge:
+
+- **Apple MLX Team**: For creating the MLX framework that inspired this PyTorch port
+- **Hugging Face**: For the Transformers library and model hub integration
+- **PyTorch Team**: For the underlying deep learning framework
+- **MLX Community**: For the extensive collection of optimized models in the [MLX Community](https://huggingface.co/mlx-community) Hub
+- **NLTK Project**: For natural language processing tools used in quality scoring
+- All contributors to open-source LLM research and tooling
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Citation
+
+If you use LLMForge in your research, please cite:
+
+```bibtex
+@software{llmforge,
+  title = {LLMForge: LLM Inference and RL Self-Improvement Engine},
+  author = {LLMForge Contributors},
+  year = {2025},
+  url = {https://github.com/llmforge/llmforge}
+}
+```

@@ -2,7 +2,7 @@ import argparse
 import unittest
 from unittest.mock import MagicMock, patch
 
-from mlx_lm.chat import setup_arg_parser
+from llmforge.chat import setup_arg_parser
 
 
 class TestChat(unittest.TestCase):
@@ -56,9 +56,9 @@ class TestChat(unittest.TestCase):
         self.assertEqual(args.max_tokens, 512)
         self.assertEqual(args.system_prompt, "You are a helpful assistant.")
 
-    @patch("mlx_lm.chat.load")
-    @patch("mlx_lm.chat.make_prompt_cache")
-    @patch("mlx_lm.chat.stream_generate")
+    @patch("llmforge.chat.load")
+    @patch("llmforge.chat.make_prompt_cache")
+    @patch("llmforge.chat.stream_generate")
     @patch("builtins.input")
     @patch("builtins.print")
     def test_system_prompt_in_messages(
@@ -69,7 +69,7 @@ class TestChat(unittest.TestCase):
         mock_make_prompt_cache,
         mock_load,
     ):
-        from mlx_lm.chat import main
+        from llmforge.chat import main
 
         # Mock the model and tokenizer
         mock_model = MagicMock()
@@ -111,9 +111,9 @@ class TestChat(unittest.TestCase):
         self.assertEqual(call_args[1]["role"], "user")
         self.assertEqual(call_args[1]["content"], "What is the weather?")
 
-    @patch("mlx_lm.chat.load")
-    @patch("mlx_lm.chat.make_prompt_cache")
-    @patch("mlx_lm.chat.stream_generate")
+    @patch("llmforge.chat.load")
+    @patch("llmforge.chat.make_prompt_cache")
+    @patch("llmforge.chat.stream_generate")
     @patch("builtins.input")
     @patch("builtins.print")
     def test_no_system_prompt_in_messages(
@@ -124,7 +124,7 @@ class TestChat(unittest.TestCase):
         mock_make_prompt_cache,
         mock_load,
     ):
-        from mlx_lm.chat import main
+        from llmforge.chat import main
 
         # Mock the model and tokenizer
         mock_model = MagicMock()

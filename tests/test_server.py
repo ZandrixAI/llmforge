@@ -9,9 +9,9 @@ import unittest
 import mlx.core as mx
 import requests
 
-from mlx_lm.models.cache import KVCache
-from mlx_lm.server import APIHandler, LRUPromptCache, ResponseGenerator
-from mlx_lm.utils import load
+from llmforge.models.cache import KVCache
+from llmforge.server import APIHandler, LRUPromptCache, ResponseGenerator
+from llmforge.utils import load
 
 
 class DummyModelProvider:
@@ -219,7 +219,7 @@ class TestServer(unittest.TestCase):
         self.assertIn("created", model)
 
     def test_sequence_overlap(self):
-        from mlx_lm.server import sequence_overlap
+        from llmforge.server import sequence_overlap
 
         self.assertTrue(sequence_overlap([1], [1]))
         self.assertTrue(sequence_overlap([1, 2], [1, 2]))

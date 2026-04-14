@@ -7,15 +7,15 @@ import mlx.core as mx
 import mlx.nn as nn
 from mlx.utils import tree_map
 
-from mlx_lm.models import rope_utils
-from mlx_lm.models.base import create_causal_mask, scaled_dot_product_attention
-from mlx_lm.models.cache import KVCache, RotatingKVCache, make_prompt_cache
-from mlx_lm.models.gated_delta import (
+from llmforge.models import rope_utils
+from llmforge.models.base import create_causal_mask, scaled_dot_product_attention
+from llmforge.models.cache import KVCache, RotatingKVCache, make_prompt_cache
+from llmforge.models.gated_delta import (
     gated_delta_kernel,
     gated_delta_ops,
     gated_delta_update,
 )
-from mlx_lm.models.ssm import ssm_attn, ssm_update
+from llmforge.models.ssm import ssm_attn, ssm_update
 
 
 class TestModels(unittest.TestCase):
@@ -180,7 +180,7 @@ class TestModels(unittest.TestCase):
         self.assertTrue(mx.array_equal(sums, expected_sums))
 
     def test_llama_model_sliding_attention(self):
-        from mlx_lm.models import llama
+        from llmforge.models import llama
 
         args = llama.ModelArgs(
             model_type="llama",
@@ -332,7 +332,7 @@ class TestModels(unittest.TestCase):
         copy.deepcopy(model)
 
     def test_llama(self):
-        from mlx_lm.models import llama
+        from llmforge.models import llama
 
         args = llama.ModelArgs(
             model_type="llama",
@@ -349,7 +349,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_lfm2(self):
-        from mlx_lm.models import lfm2
+        from llmforge.models import lfm2
 
         args = lfm2.ModelArgs(
             model_type="lfm2",
@@ -376,7 +376,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_lfm2_moe(self):
-        from mlx_lm.models import lfm2_moe
+        from llmforge.models import lfm2_moe
 
         args = lfm2_moe.ModelArgs(
             model_type="lfm2_moe",
@@ -405,7 +405,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_bitnet(self):
-        from mlx_lm.models import bitnet
+        from llmforge.models import bitnet
 
         args = bitnet.ModelArgs(
             model_type="bitnet",
@@ -423,7 +423,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_phi2(self):
-        from mlx_lm.models import phi
+        from llmforge.models import phi
 
         args = phi.ModelArgs()
         model = phi.Model(args)
@@ -432,7 +432,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_phi3(self):
-        from mlx_lm.models import phi3
+        from llmforge.models import phi3
 
         args = phi3.ModelArgs(
             model_type="phi3",
@@ -449,7 +449,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_gemma(self):
-        from mlx_lm.models import gemma
+        from llmforge.models import gemma
 
         args = gemma.ModelArgs(
             model_type="gemma",
@@ -468,7 +468,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_mixtral(self):
-        from mlx_lm.models import mixtral
+        from llmforge.models import mixtral
 
         # Make a baby mixtral, because it will actually do the
         # eval
@@ -490,7 +490,7 @@ class TestModels(unittest.TestCase):
 
     @unittest.skip("requires ai2-olmo")
     def test_olmo(self):
-        from mlx_lm.models import olmo
+        from llmforge.models import olmo
 
         args = olmo.ModelArgs(
             model_type="olmo",
@@ -510,7 +510,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_qwen3_moe(self):
-        from mlx_lm.models import qwen3_moe
+        from llmforge.models import qwen3_moe
 
         args = qwen3_moe.ModelArgs(
             model_type="qwen3_moe",
@@ -538,7 +538,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_qwen3(self):
-        from mlx_lm.models import qwen3
+        from llmforge.models import qwen3
 
         args = qwen3.ModelArgs(
             model_type="qwen3",
@@ -584,7 +584,7 @@ class TestModels(unittest.TestCase):
             ("qwen3_5", "mtp.fc.weights"),
             ("qwen3_5_moe", "mtp.fc.weight"),
         ):
-            module = importlib.import_module(f"mlx_lm.models.{model_type}")
+            module = importlib.import_module(f"llmforge.models.{model_type}")
             args = module.ModelArgs.from_dict(
                 {
                     "model_type": model_type,
@@ -613,7 +613,7 @@ class TestModels(unittest.TestCase):
             )
 
     def test_qwen2_moe(self):
-        from mlx_lm.models import qwen2_moe
+        from llmforge.models import qwen2_moe
 
         args = qwen2_moe.ModelArgs(
             model_type="qwen2_moe",
@@ -634,7 +634,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_qwen2(self):
-        from mlx_lm.models import qwen2
+        from llmforge.models import qwen2
 
         args = qwen2.ModelArgs(
             model_type="qwen2",
@@ -652,7 +652,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_qwen(self):
-        from mlx_lm.models import qwen
+        from llmforge.models import qwen
 
         args = qwen.ModelArgs(
             model_type="qwen",
@@ -663,7 +663,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_plamo(self):
-        from mlx_lm.models import plamo
+        from llmforge.models import plamo
 
         args = plamo.ModelArgs(
             model_type="plamo",
@@ -680,7 +680,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_plamo2(self):
-        from mlx_lm.models import plamo2
+        from llmforge.models import plamo2
 
         args = plamo2.ModelArgs(
             model_type="plamo2",
@@ -697,7 +697,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_stablelm(self):
-        from mlx_lm.models import stablelm
+        from llmforge.models import stablelm
 
         args = stablelm.ModelArgs(
             model_type="stablelm",
@@ -737,7 +737,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_starcoder2(self):
-        from mlx_lm.models import starcoder2
+        from llmforge.models import starcoder2
 
         args = starcoder2.ModelArgs(
             model_type="starcoder2",
@@ -753,7 +753,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_step3p5(self):
-        from mlx_lm.models import step3p5
+        from llmforge.models import step3p5
 
         args = step3p5.ModelArgs(
             model_type="step3p5",
@@ -791,7 +791,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_step3p5_make_cache_uses_rotating_for_sliding_layers(self):
-        from mlx_lm.models import step3p5
+        from llmforge.models import step3p5
 
         args = step3p5.ModelArgs(
             model_type="step3p5",
@@ -844,7 +844,7 @@ class TestModels(unittest.TestCase):
         self.assertEqual(caches[3].size(), 7)
 
     def test_step3p5_make_cache_uses_fallback_sliding_pattern(self):
-        from mlx_lm.models import step3p5
+        from llmforge.models import step3p5
 
         args = step3p5.ModelArgs(
             model_type="step3p5",
@@ -889,7 +889,7 @@ class TestModels(unittest.TestCase):
         self.assertEqual(caches[4].size(), args.sliding_window)
 
     def test_cohere(self):
-        from mlx_lm.models import cohere
+        from llmforge.models import cohere
 
         args = cohere.ModelArgs(
             model_type="cohere",
@@ -900,7 +900,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_dbrx(self):
-        from mlx_lm.models import dbrx
+        from llmforge.models import dbrx
 
         args = dbrx.ModelArgs(
             model_type="dbrx",
@@ -915,7 +915,7 @@ class TestModels(unittest.TestCase):
         self.model_test_runner(model, args.model_type, args.vocab_size, args.n_layers)
 
     def test_minicpm(self):
-        from mlx_lm.models import minicpm
+        from llmforge.models import minicpm
 
         args = minicpm.ModelArgs(
             model_type="minicpm",
@@ -936,7 +936,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_mamba(self):
-        from mlx_lm.models import mamba
+        from llmforge.models import mamba
 
         args = mamba.ModelArgs(
             model_type="mamba",
@@ -956,7 +956,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_falcon_h1(self):
-        from mlx_lm.models import falcon_h1
+        from llmforge.models import falcon_h1
 
         args = falcon_h1.ModelArgs(
             model_type="falcon_h1",
@@ -969,7 +969,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_gpt2(self):
-        from mlx_lm.models import gpt2
+        from llmforge.models import gpt2
 
         args = gpt2.ModelArgs(
             model_type="gpt2",
@@ -985,7 +985,7 @@ class TestModels(unittest.TestCase):
         self.model_test_runner(model, args.model_type, args.vocab_size, args.n_layer)
 
     def test_gpt_neox(self):
-        from mlx_lm.models import gpt_neox
+        from llmforge.models import gpt_neox
 
         args = gpt_neox.ModelArgs(
             model_type="gpt_neox",
@@ -1004,7 +1004,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_openelm(self):
-        from mlx_lm.models import openelm
+        from llmforge.models import openelm
 
         args = openelm.ModelArgs(
             model_type="openelm",
@@ -1062,7 +1062,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_internlm2(self):
-        from mlx_lm.models import internlm2
+        from llmforge.models import internlm2
 
         args = internlm2.ModelArgs(
             model_type="internlm2",
@@ -1079,7 +1079,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_llama3_1(self):
-        from mlx_lm.models import llama
+        from llmforge.models import llama
 
         args = llama.ModelArgs(
             model_type="llama",
@@ -1106,7 +1106,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_deepseek(self):
-        from mlx_lm.models import deepseek
+        from llmforge.models import deepseek
 
         args = deepseek.ModelArgs(
             model_type="deepseek",
@@ -1124,7 +1124,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_deepseek_v2(self):
-        from mlx_lm.models import deepseek_v2
+        from llmforge.models import deepseek_v2
 
         args = deepseek_v2.ModelArgs(
             model_type="deepseek_v2",
@@ -1156,7 +1156,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_deepseek_v3(self):
-        from mlx_lm.models import deepseek_v3
+        from llmforge.models import deepseek_v3
 
         args = deepseek_v3.ModelArgs(
             model_type="deepseek_v3",
@@ -1193,7 +1193,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_gemma2(self):
-        from mlx_lm.models import gemma2
+        from llmforge.models import gemma2
 
         args = gemma2.ModelArgs(
             model_type="gemma2",
@@ -1212,7 +1212,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_gemma3_text(self):
-        from mlx_lm.models import gemma3_text
+        from llmforge.models import gemma3_text
 
         args = gemma3_text.ModelArgs(
             model_type="gemma3_text",
@@ -1232,7 +1232,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_gpt_bigcode(self):
-        from mlx_lm.models import gpt_bigcode
+        from llmforge.models import gpt_bigcode
 
         args = gpt_bigcode.ModelArgs(
             model_type="gpt_bigcode",
@@ -1248,7 +1248,7 @@ class TestModels(unittest.TestCase):
         self.model_test_runner(model, args.model_type, args.vocab_size, args.n_layer)
 
     def test_nemotron(self):
-        from mlx_lm.models import nemotron
+        from llmforge.models import nemotron
 
         args = nemotron.ModelArgs(
             model_type="nemotron",
@@ -1267,7 +1267,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_phi3small(self):
-        from mlx_lm.models import phi3small
+        from llmforge.models import phi3small
 
         args = phi3small.ModelArgs(
             model_type="phi3small",
@@ -1287,7 +1287,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_phimoe(self):
-        from mlx_lm.models import phimoe
+        from llmforge.models import phimoe
 
         args = phimoe.ModelArgs(
             model_type="phimoe",
@@ -1312,7 +1312,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_recurrent_gemma(self):
-        from mlx_lm.models import recurrent_gemma
+        from llmforge.models import recurrent_gemma
 
         args = recurrent_gemma.ModelArgs(
             model_type="recurrent_gemma",
@@ -1336,7 +1336,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_hunyuan(self):
-        from mlx_lm.models import hunyuan
+        from llmforge.models import hunyuan
 
         args = hunyuan.ModelArgs(
             model_type="hunyuan",
@@ -1368,7 +1368,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_hunyuan_v1_dense(self):
-        from mlx_lm.models import hunyuan_v1_dense
+        from llmforge.models import hunyuan_v1_dense
 
         args = hunyuan_v1_dense.ModelArgs(
             model_type="hunyuan_v1_dense",
@@ -1400,7 +1400,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_olmo2(self):
-        from mlx_lm.models import olmo2
+        from llmforge.models import olmo2
 
         args = olmo2.ModelArgs(
             model_type="olmo2",
@@ -1420,7 +1420,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_exaone(self):
-        from mlx_lm.models import exaone
+        from llmforge.models import exaone
 
         args = exaone.ModelArgs(
             model_type="exaone",
@@ -1437,7 +1437,7 @@ class TestModels(unittest.TestCase):
         self.model_test_runner(model, args.model_type, args.vocab_size, args.num_layers)
 
     def test_cohere2(self):
-        from mlx_lm.models import cohere2
+        from llmforge.models import cohere2
 
         args = cohere2.ModelArgs(
             model_type="cohere2",
@@ -1453,7 +1453,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_internlm3(self):
-        from mlx_lm.models import internlm3
+        from llmforge.models import internlm3
 
         args = internlm3.ModelArgs(
             model_type="internlm3",
@@ -1470,7 +1470,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_iquestloopcoder(self):
-        from mlx_lm.models import iquestloopcoder
+        from llmforge.models import iquestloopcoder
 
         args = iquestloopcoder.ModelArgs(
             model_type="iquestloopcoder",
@@ -1493,7 +1493,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_smollm3(self):
-        from mlx_lm.models import smollm3
+        from llmforge.models import smollm3
 
         args = smollm3.ModelArgs(
             model_type="smollm3",
@@ -1510,7 +1510,7 @@ class TestModels(unittest.TestCase):
         )
 
     def test_gpt_oss(self):
-        from mlx_lm.models import gpt_oss
+        from llmforge.models import gpt_oss
 
         args = gpt_oss.ModelArgs(
             model_type="gpt_oss",
@@ -2517,7 +2517,7 @@ class TestModels(unittest.TestCase):
         for config in test_configs:
             model_type = config["model_type"]
             with self.subTest(f"Testing {model_type}", model_type=model_type):
-                arch = importlib.import_module(f"mlx_lm.models.{model_type}")
+                arch = importlib.import_module(f"llmforge.models.{model_type}")
                 args = arch.ModelArgs.from_dict(config)
                 model = arch.Model(args)
                 self.model_test_runner(

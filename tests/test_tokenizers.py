@@ -5,12 +5,12 @@ from pathlib import Path
 
 from huggingface_hub import snapshot_download
 
-from mlx_lm.tokenizer_utils import (
+from llmforge.tokenizer_utils import (
     BPEStreamingDetokenizer,
     NaiveStreamingDetokenizer,
     SPMStreamingDetokenizer,
 )
-from mlx_lm.utils import load_tokenizer
+from llmforge.utils import load_tokenizer
 
 
 class TestTokenizers(unittest.TestCase):

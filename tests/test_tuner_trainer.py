@@ -4,7 +4,7 @@ import unittest
 
 import mlx.core as mx
 
-from mlx_lm.tuner.trainer import iterate_batches
+from llmforge.tuner.trainer import iterate_batches
 
 
 class MockDistributedGroup:

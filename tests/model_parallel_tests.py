@@ -5,7 +5,7 @@ import unittest
 
 import mlx.core as mx
 
-import mlx_lm
+import llmforge
 
 
 class TestModelParallel(unittest.TestCase):
@@ -99,7 +99,7 @@ class TestModelParallel(unittest.TestCase):
         for config in test_configs:
             model_type = config["model_type"]
             with self.subTest(f"Testing {model_type}", model_type=model_type):
-                arch = importlib.import_module(f"mlx_lm.models.{model_type}")
+                arch = importlib.import_module(f"llmforge.models.{model_type}")
                 args = arch.ModelArgs.from_dict(config)
                 model = arch.Model(args)
                 vocab_size = args.vocab_size

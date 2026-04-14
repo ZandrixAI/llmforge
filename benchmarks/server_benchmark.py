@@ -1,7 +1,7 @@
 """
 Spin up the local server:
 
-    mlx_lm.server
+    llmforge.server
 
 Then run the benchmark:
 

@@ -2,7 +2,7 @@ import unittest
 
 import mlx.core as mx
 
-from mlx_lm.sample_utils import apply_min_p, apply_top_k, apply_top_p, apply_xtc
+from llmforge.sample_utils import apply_min_p, apply_top_k, apply_top_p, apply_xtc
 
 
 class TestSampleUtils(unittest.TestCase):
@@ -117,7 +117,7 @@ class TestSampleUtils(unittest.TestCase):
         self.assertTrue(mx.allclose(new_probs, probs))
 
     def test_presence_penalty(self):
-        from mlx_lm.sample_utils import make_presence_penalty
+        from llmforge.sample_utils import make_presence_penalty
 
         # Token appears multiple times - penalty applied once
         tokens = mx.array([0, 0, 0, 1, 1])
@@ -132,7 +132,7 @@ class TestSampleUtils(unittest.TestCase):
         self.assertAlmostEqual(result[0, 3].item(), 0.0)
 
     def test_frequency_penalty(self):
-        from mlx_lm.sample_utils import make_frequency_penalty
+        from llmforge.sample_utils import make_frequency_penalty
 
         # Token appears multiple times - penalty applied proportionally
         tokens = mx.array([0, 0, 0, 1, 1])
@@ -148,7 +148,7 @@ class TestSampleUtils(unittest.TestCase):
         self.assertAlmostEqual(result[0, 3].item(), 0.0)
 
     def test_make_logits_processors(self):
-        from mlx_lm.sample_utils import make_logits_processors
+        from llmforge.sample_utils import make_logits_processors
 
         # Create processors with all three penalty types
         tokens = mx.array([0, 0, 0, 1, 1])

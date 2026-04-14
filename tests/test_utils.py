@@ -8,7 +8,7 @@ import mlx.core as mx
 import mlx.nn as nn
 from mlx.utils import tree_flatten
 
-from mlx_lm import convert, utils
+from llmforge import convert, utils
 
 HF_MODEL_PATH = "mlx-community/Qwen1.5-0.5B-Chat-4bit"
 
@@ -27,7 +27,7 @@ class TestUtils(unittest.TestCase):
         cls.test_dir_fid.cleanup()
 
     def test_load(self):
-        from mlx_lm.models.qwen2 import Model as Qwen2Model
+        from llmforge.models.qwen2 import Model as Qwen2Model
 
         model, _ = utils.load(HF_MODEL_PATH)
         self.assertIsInstance(model, Qwen2Model)
@@ -41,7 +41,7 @@ class TestUtils(unittest.TestCase):
         self.assertTrue(mx.allclose(p1, p2))
 
     def test_make_shards(self):
-        from mlx_lm.models import llama
+        from llmforge.models import llama
 
         args = llama.ModelArgs(
             model_type="llama",
@@ -59,7 +59,7 @@ class TestUtils(unittest.TestCase):
         self.assertTrue(gb <= len(shards) <= gb + 1)
 
     def test_quantize(self):
-        from mlx_lm.models import llama
+        from llmforge.models import llama
 
         args = llama.ModelArgs(
             model_type="llama",

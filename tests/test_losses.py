@@ -4,7 +4,7 @@ import unittest
 
 import mlx.core as mx
 
-from mlx_lm.tuner.losses import can_run_metal, js_div_loss, kl_div_loss
+from llmforge.tuner.losses import can_run_metal, js_div_loss, kl_div_loss
 
 
 class TestLosses(unittest.TestCase):

@@ -1,74 +1,71 @@
-# Copyright © 2024 Apple Inc.
+# LLMForge - Setup Configuration
 
 import sys
 from pathlib import Path
 
 from setuptools import setup
 
-package_dir = Path(__file__).parent / "mlx_lm"
+package_dir = Path(__file__).parent / "llmforge"
 sys.path.append(str(package_dir))
 
 from _version import __version__
 
-MIN_MLX_VERSION = "0.30.4"
-
 setup(
-    name="mlx-lm",
+    name="llmforge",
     version=__version__,
-    description="LLMs with MLX and the Hugging Face Hub",
+    description="LLM Inference and RL Self-Improvement Engine - Built on PyTorch",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     readme="README.md",
-    author_email="mlx@group.apple.com",
-    author="MLX Contributors",
-    url="https://github.com/ml-explore/mlx-lm",
+    author="LLMForge Contributors",
+    url="https://github.com/llmforge/llmforge",
     license="MIT",
     install_requires=[
-        f"mlx>={MIN_MLX_VERSION}; platform_system == 'Darwin'",
+        "torch>=2.0.0",
+        "safetensors",
         "numpy",
         "transformers>=5.0.0",
         "sentencepiece",
         "protobuf",
         "pyyaml",
         "jinja2",
+        "psutil>=5.9.0",
+        "nltk>=3.8.0",
     ],
     packages=[
-        "mlx_lm",
-        "mlx_lm.models",
-        "mlx_lm.quant",
-        "mlx_lm.tuner",
-        "mlx_lm.tool_parsers",
-        "mlx_lm.chat_templates",
+        "llmforge",
+        "llmforge.models",
+        "llmforge.quant",
+        "llmforge.tuner",
+        "llmforge.tool_parsers",
+        "llmforge.chat_templates",
     ],
     python_requires=">=3.8",
     extras_require={
-        "test": ["datasets", "lm-eval"],
-        "train": ["datasets", "tqdm"],
+        "test": ["datasets", "lm-eval", "pytest"],
+        "train": ["datasets", "tqdm", "accelerate"],
         "evaluate": ["lm-eval", "tqdm"],
-        "cuda13": [f"mlx[cuda13]>={MIN_MLX_VERSION}"],
-        "cuda12": [f"mlx[cuda12]>={MIN_MLX_VERSION}"],
-        "cpu": [f"mlx[cpu]>={MIN_MLX_VERSION}"],
     },
     entry_points={
         "console_scripts": [
-            "mlx_lm = mlx_lm.cli:main",
-            "mlx_lm.awq = mlx_lm.quant.awq:main",
-            "mlx_lm.dwq = mlx_lm.quant.dwq:main",
-            "mlx_lm.dynamic_quant = mlx_lm.quant.dynamic_quant:main",
-            "mlx_lm.gptq = mlx_lm.quant.gptq:main",
-            "mlx_lm.benchmark = mlx_lm.benchmark:main",
-            "mlx_lm.cache_prompt = mlx_lm.cache_prompt:main",
-            "mlx_lm.chat = mlx_lm.chat:main",
-            "mlx_lm.convert = mlx_lm.convert:main",
-            "mlx_lm.evaluate = mlx_lm.evaluate:main",
-            "mlx_lm.fuse = mlx_lm.fuse:main",
-            "mlx_lm.generate = mlx_lm.generate:main",
-            "mlx_lm.lora = mlx_lm.lora:main",
-            "mlx_lm.perplexity = mlx_lm.perplexity:main",
-            "mlx_lm.server = mlx_lm.server:main",
-            "mlx_lm.share = mlx_lm.share:main",
-            "mlx_lm.manage = mlx_lm.manage:main",
-            "mlx_lm.upload = mlx_lm.upload:main",
+            "llmforge = llmforge.cli:main",
+            "llmforge.awq = llmforge.quant.awq:main",
+            "llmforge.dwq = llmforge.quant.dwq:main",
+            "llmforge.dynamic_quant = llmforge.quant.dynamic_quant:main",
+            "llmforge.gptq = llmforge.quant.gptq:main",
+            "llmforge.benchmark = llmforge.benchmark:main",
+            "llmforge.cache_prompt = llmforge.cache_prompt:main",
+            "llmforge.chat = llmforge.chat:main",
+            "llmforge.convert = llmforge.convert:main",
+            "llmforge.evaluate = llmforge.evaluate:main",
+            "llmforge.fuse = llmforge.fuse:main",
+            "llmforge.generate = llmforge.generate:main",
+            "llmforge.lora = llmforge.lora:main",
+            "llmforge.perplexity = llmforge.perplexity:main",
+            "llmforge.server = llmforge.server:main",
+            "llmforge.share = llmforge.share:main",
+            "llmforge.manage = llmforge.manage:main",
+            "llmforge.upload = llmforge.upload:main",
         ]
     },
 )

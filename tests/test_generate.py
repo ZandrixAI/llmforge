@@ -6,7 +6,7 @@ from typing import List
 
 import mlx.core as mx
 
-from mlx_lm.generate import (
+from llmforge.generate import (
     BatchGenerator,
     GenerationResponse,
     batch_generate,
@@ -14,9 +14,9 @@ from mlx_lm.generate import (
     generate_step,
     stream_generate,
 )
-from mlx_lm.models.cache import RotatingKVCache
-from mlx_lm.sample_utils import make_logits_processors, make_sampler
-from mlx_lm.utils import load
+from llmforge.models.cache import RotatingKVCache
+from llmforge.sample_utils import make_logits_processors, make_sampler
+from llmforge.utils import load
 
 
 class TestGenerate(unittest.TestCase):
@@ -572,7 +572,7 @@ class TestGenerate(unittest.TestCase):
                 )
 
     def test_batch_continued_generation_ssm(self):
-        from mlx_lm.models import mamba2
+        from llmforge.models import mamba2
 
         random.seed(0)
         mx.random.seed(4)
@@ -600,7 +600,7 @@ class TestGenerate(unittest.TestCase):
         self._continued_generation_test_helper(model)
 
     def test_batch_continued_generation_gated_delta(self):
-        from mlx_lm.models import qwen3_next
+        from llmforge.models import qwen3_next
 
         random.seed(0)
         mx.random.seed(4)

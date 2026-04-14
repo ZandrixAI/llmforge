@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from mlx_lm.tool_parsers import (
+from llmforge.tool_parsers import (
     function_gemma,
     glm47,
     json_tools,

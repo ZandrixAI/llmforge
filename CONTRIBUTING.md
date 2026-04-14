@@ -1,4 +1,4 @@
-# Contributing to MLX LM 
+# Contributing to LLMForge
 
 We want to make contributing to this project as easy and transparent as
 possible.
@@ -11,13 +11,13 @@ possible.
 4. For code formatting install `pre-commit` using something like `pip install pre-commit` and run `pre-commit install`.
    This should install hooks for running `black` and `clang-format` to ensure
    consistent style for C++ and python code.
- 
+  
    You can also run the formatters manually as follows on individual files:
- 
+  
      ```bash
      clang-format -i file.cpp
      ```
- 
+  
      ```bash
      black file.py
      ```
@@ -31,7 +31,7 @@ possible.
      # specific files
      pre-commit run --files file1.py file2.py
      ```
- 
+  
    or run `pre-commit run --all-files` to check all files in the repo.
 
 ## Issues
@@ -41,12 +41,12 @@ clear and has sufficient instructions to be able to reproduce the issue.
 
 ## License
 
-By contributing to mlx-lm, you agree that your contributions will be licensed
+By contributing to LLMForge, you agree that your contributions will be licensed
 under the LICENSE file in the root directory of this source tree.
 
 ## Adding New Models
 
-Below are some tips to port LLMs available on Hugging Face to MLX.
+Below are some tips to port LLMs available on Hugging Face to LLMForge.
 
 From this directory, do an editable install:
 
@@ -60,7 +60,7 @@ Then check if the model has weights in the
 convert it.
 
 After that, add the model file to the
-[`mlx_lm/models`](https://github.com/ml-explore/mlx-lm/tree/main/mlx_lm/models)
+[`llmforge/models`](https://github.com/llmforge/llmforge/tree/main/llmforge/models)
 directory. You can see other examples there. We recommend starting from a model
 that is similar to the model you are porting.
 
@@ -78,10 +78,10 @@ To determine the model layer names, we suggest either:
   in the Hugging Face repo.
 
 To add LoRA support edit
-[`mlx_lm/tuner/utils.py`](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/tuner/utils.py#L27-L60)
+[`llmforge/tuner/utils.py`](https://github.com/llmforge/llmforge/blob/main/llmforge/tuner/utils.py#L27-L60)
 
-Finally, add a test for the new modle type to the [model
-tests](https://github.com/ml-explore/mlx-lm/blob/main/tests/test_models.py).
+Finally, add a test for the new model type to the [model
+tests](https://github.com/llmforge/llmforge/blob/main/tests/test_models.py).
 
 You can run the tests with:
 
