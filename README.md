@@ -33,7 +33,7 @@ uv pip install llmforge
 **From source**:
 
 ```sh
-git clone https://github.com/llmforge/llmforge.git
+git clone https://github.com/ZandrixAI/llmforge.git
 cd llmforge
 pip install -e .
 ```
@@ -215,6 +215,7 @@ LLMForge is built upon the pioneering work of the **MLX Community** and draws si
 Specifically, we acknowledge:
 
 - **Apple MLX Team**: For creating the MLX framework that inspired this PyTorch port
+- **MLX-LM Community**: For the foundational inference code and model implementations that made this project possible
 - **Hugging Face**: For the Transformers library and model hub integration
 - **PyTorch Team**: For the underlying deep learning framework
 - **MLX Community**: For the extensive collection of optimized models in the [MLX Community](https://huggingface.co/mlx-community) Hub
@@ -223,7 +224,16 @@ Specifically, we acknowledge:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **LLMForge Commercial License** - see the [LICENSE](LICENSE) file for details.
+
+This license allows you to:
+- ✅ Use for personal or commercial purposes
+- ✅ Modify and create derivative works
+- ✅ Re-sell the software
+
+With the condition that if you redistribute or sell the software, you must include prominent acknowledgment: "This product includes LLMForge technology by ZandrixAI".
+
+You may not use the name "LLMForge" or "ZandrixAI" as part of your own product name, brand, or trademark.
 
 ## Contributing
 
@@ -238,6 +248,6 @@ If you use LLMForge in your research, please cite:
   title = {LLMForge: LLM Inference and RL Self-Improvement Engine},
   author = {LLMForge Contributors},
   year = {2025},
-  url = {https://github.com/llmforge/llmforge}
+  url = {https://github.com/ZandrixAI/llmforge}
 }
 ```

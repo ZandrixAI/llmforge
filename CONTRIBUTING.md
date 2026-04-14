@@ -60,7 +60,7 @@ Then check if the model has weights in the
 convert it.
 
 After that, add the model file to the
-[`llmforge/models`](https://github.com/llmforge/llmforge/tree/main/llmforge/models)
+[`llmforge/models`](https://github.com/ZandrixAI/llmforge/tree/main/llmforge/models)
 directory. You can see other examples there. We recommend starting from a model
 that is similar to the model you are porting.
 
@@ -78,13 +78,24 @@ To determine the model layer names, we suggest either:
   in the Hugging Face repo.
 
 To add LoRA support edit
-[`llmforge/tuner/utils.py`](https://github.com/llmforge/llmforge/blob/main/llmforge/tuner/utils.py#L27-L60)
+[`llmforge/tuner/utils.py`](https://github.com/ZandrixAI/llmforge/blob/main/llmforge/tuner/utils.py#L27-L60)
 
 Finally, add a test for the new model type to the [model
-tests](https://github.com/llmforge/llmforge/blob/main/tests/test_models.py).
+tests](https://github.com/ZandrixAI/llmforge/blob/main/tests/test_models.py).
 
 You can run the tests with:
 
 ```shell
 python -m unittest discover tests/
 ```
+
+## Contributors
+
+Your contributions will be automatically acknowledged! Once your Pull Request is merged, your name will appear on the [Contributors](../community/contributors.md) page in our documentation.
+
+To be listed:
+1. Fork the repository
+2. Make your contributions
+3. Submit a Pull Request
+
+After merging, run `python scripts/generate_contributors.py` or the GitHub Actions workflow will automatically update the contributors list.

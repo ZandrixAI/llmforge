@@ -1,6 +1,5 @@
-MIT License
-
-Copyright © 2023 Apple Inc.
+LLMForge Commercial License
+Copyright (c) 2026 ZandrixAI
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -9,8 +8,14 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. Redistributions of the Software must retain the above copyright notice.
+
+2. If you redistribute or sell the Software, you must include prominent 
+   acknowledgment: "This product includes LLMForge technology by ZandrixAI" 
+   in your documentation or product materials.
+
+3. You may not use the name "LLMForge" or "ZandrixAI" as part of your own 
+   product name, brand, or trademark.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

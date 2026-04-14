@@ -1,0 +1,66 @@
+# LLMForge Documentation Configuration
+
+site_name: LLMForge
+site_description: LLM Inference and RL Self-Improvement Engine - Built on PyTorch
+site_author: LLMForge Contributors
+site_url: https://ZandrixAI.github.io/llmforge/
+
+repo_name: ZandrixAI/llmforge
+repo_url: https://github.com/ZandrixAI/llmforge
+
+copyright: "Copyright &copy; 2026 ZandrixAI"
+
+# Extra CSS
+extra_css:
+  - stylesheets/extra.css
+
+# Plugins
+plugins:
+  - search
+
+# Material theme features
+theme:
+  name: material
+  features:
+    - content.code.annotate
+  navigation_depth: 3
+
+# Markdown extensions
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - toc:
+      permalink: true
+
+# Navigation structure
+nav:
+  - Home: index.md
+  - Installation:
+      - installation.md
+  - Quick Start:
+      - quickstart.md
+  - Guides:
+      - guides/inference.md
+      - guides/rl_engine.md
+      - guides/chat.md
+      - guides/memory.md
+  - API Reference:
+      - api/base_engine.md
+      - api/inference.md
+      - api/rl_engine.md
+      - api/utils.md
+  - Advanced:
+      - advanced/quantization.md
+      - advanced/fine_tuning.md
+      - advanced/server.md
+  - Examples: examples.md
+  - Community:
+      - contributing.md
+      - includes/contributors.md
+      - code-of-conduct.md
+      - acknowledgements.md
+      - license.md

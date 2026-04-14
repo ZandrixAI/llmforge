@@ -7,10 +7,10 @@ name = "llmforge"
 version = "0.1.0"
 description = "LLM Inference and RL Self-Improvement Engine - Built on PyTorch"
 readme = "README.md"
-license = {text = "MIT"}
+license = {text = "LLMForge Commercial License"}
 requires-python = ">=3.8"
 authors = [
-    {name = "LLMForge Contributors"},
+    {name = "ZandrixAI"},
 ]
 keywords = [
     "llm",
@@ -74,10 +74,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/llmforge/llmforge"
-Documentation = "https://github.com/llmforge/llmforge#readme"
-Repository = "https://github.com/llmforge/llmforge"
-Issues = "https://github.com/llmforge/llmforge/issues"
+Homepage = "https://github.com/ZandrixAI/llmforge"
+Documentation = "https://ZandrixAI.github.io/llmforge/"
+Repository = "https://github.com/ZandrixAI/llmforge"
+Issues = "https://github.com/ZandrixAI/llmforge/issues"
 
 [project.optional-dependencies.gpu]
 torch = [
