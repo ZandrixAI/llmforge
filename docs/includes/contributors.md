@@ -105,6 +105,14 @@ Thank you to all the amazing people who have contributed to LLMForge!
 </div>
 
 <div class="contributor-card">
+<a href="https://github.com/DawoodTouseef" target="_blank">
+<img src="https://avatars.githubusercontent.com/u/97373719?v=4&s=64" alt="DawoodTouseef" class="contributor-avatar">
+<span class="contributor-name">DawoodTouseef</span>
+<span class="contributor-count">4 contributions</span>
+</a>
+</div>
+
+<div class="contributor-card">
 <a href="https://github.com/tidely" target="_blank">
 <img src="https://avatars.githubusercontent.com/u/43219534?v=4&s=64" alt="tidely" class="contributor-avatar">
 <span class="contributor-name">tidely</span>
@@ -236,14 +244,6 @@ Thank you to all the amazing people who have contributed to LLMForge!
 <a href="https://github.com/Evanev7" target="_blank">
 <img src="https://avatars.githubusercontent.com/u/13599445?v=4&s=64" alt="Evanev7" class="contributor-avatar">
 <span class="contributor-name">Evanev7</span>
-<span class="contributor-count">3 contributions</span>
-</a>
-</div>
-
-<div class="contributor-card">
-<a href="https://github.com/dnakov" target="_blank">
-<img src="https://avatars.githubusercontent.com/u/3777433?v=4&s=64" alt="dnakov" class="contributor-avatar">
-<span class="contributor-name">dnakov</span>
 <span class="contributor-count">3 contributions</span>
 </a>
 </div>
